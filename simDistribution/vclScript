@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SERVER_IP='' # IP address of the server containing all files
+SERVER_USER='' # username on the server
+SERVER_HOME='' # absolute path to the home directory on the server
+PROJECT_PATH='' # relative path to the project dir (relative from the home dir)
+LOCAL_HOME='' # absolute path to the home directory on the client
+
+mkdir .ssh 2>/dev/null
+echo "" >> ~/.ssh/authorized_keys
+ssh-keygen -t rsa -N "" -f "$LOCAL_HOME"/.ssh/id_rsa
+scp "$SERVER_USER"@"SERVER_IP":~/"$PROJECT_PATH"/vclScript.py ./
+scp "$LOCAL_HOME"/.ssh/id_rsa.pub "$SERVER_USER"@"$SERVER_IP":"$SERVER_HOME" && ssh "$SERVER_USER"@"SERVER_IP" 'cat "$SERVER_USER"/id_rsa.pub >> "$SERVER_HOME"/.ssh/authorized_keys && echo "" >> "$SERVER_HOME"/.ssh/authorized_keys && rm -f "$SERVER_HOME"/id_rsa.pub'
+python vclScript.py
