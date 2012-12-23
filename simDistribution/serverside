@@ -1,0 +1,13 @@
+#!/bin/bash
+
+projectDir=~/
+
+minute=`atq | sort -t" " -k1 -nr | head -n1 | cut -d' ' -f4 | cut -d":" -f1,2`
+curr=`date | cut -d' ' -f4 | cut -d':' -f1,2`
+
+time=`python -c "import sys; hour,minute=map(int,max(sys.argv[1:]).split(':')); minute += 2; hour, minute = [(hour,minute), ((hour+1)%24,minute%60)][minute>=60]; print '%d:%02d'%(hour, minute)" "$minute" "$curr"`
+
+cat <<EOF | at "$time"
+python $projectDir/serverside.py $1
+
+EOF

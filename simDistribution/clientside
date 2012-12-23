@@ -1,0 +1,4 @@
+#!/bin/bash
+
+projectpath=~/
+python $projectpath/clientside.py "$@"

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+projectpath=~/
+user=''
+serverIP=''
+
+SMTP_SERVER=''
+SMTP_PORT=''
+FROM_ADDR=''
+TO_ADDR=''
+MESSAGE=''
+
+cat <<EOF | at now + 2 minutes
+cd $projectpath/$1/$2  # Change code for N in this line
+sh $3
+
+# copy the logfile back to the server
+scp logfile$3 $user@$serverIP:$projectpath/$1/$2/
+cd $projectpath
+python -c "import smtplib; sm = smtplib.SMTP('$SMTP_SERVER', $SMTP_PORT); sm.sendmail('$FROM_ADDR', '$TO_ADDR', '$MESSAGE')"
+python clientsiderequest.py
+EOF
