@@ -1,3 +1,17 @@
+#Copyright 2012 Ashwin Panchapakesan
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
 #!/bin/bash
 
 SERVER_IP='' # IP address of the server containing all files
@@ -9,6 +23,6 @@ LOCAL_HOME='' # absolute path to the home directory on the client
 mkdir .ssh 2>/dev/null
 echo "" >> ~/.ssh/authorized_keys
 ssh-keygen -t rsa -N "" -f "$LOCAL_HOME"/.ssh/id_rsa
-scp "$SERVER_USER"@"SERVER_IP":~/"$PROJECT_PATH"/vclScript.py ./
+scp "$SERVER_USER"@"SERVER_IP":~/"$PROJECT_PATH"/clientSetup.py ./
 scp "$LOCAL_HOME"/.ssh/id_rsa.pub "$SERVER_USER"@"$SERVER_IP":"$SERVER_HOME" && ssh "$SERVER_USER"@"SERVER_IP" 'cat "$SERVER_USER"/id_rsa.pub >> "$SERVER_HOME"/.ssh/authorized_keys && echo "" >> "$SERVER_HOME"/.ssh/authorized_keys && rm -f "$SERVER_HOME"/id_rsa.pub'
 python vclScript.py
